@@ -38,10 +38,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        btnstart = getView().findViewById(R.id.btnstart);
-        icanchor = getView().findViewById(R.id.icanchor);
-        btnstop = getView().findViewById(R.id.btnstop);
-        timerHere = getView().findViewById(R.id.timerHere);
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
+
+        btnstart = v.findViewById(R.id.btnstart);
+        icanchor = v.findViewById(R.id.icanchor);
+        btnstop = v.findViewById(R.id.btnstop);
+        timerHere = v.findViewById(R.id.timerHere);
 
         //create optional animation
         btnstop.setAlpha(0);
@@ -84,8 +87,7 @@ public class HomeFragment extends Fragment {
 
         });
 
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
+
         return v;
     }
 

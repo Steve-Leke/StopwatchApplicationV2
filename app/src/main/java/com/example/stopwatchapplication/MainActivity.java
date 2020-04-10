@@ -14,8 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -51,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         btnget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast toast=Toast.makeText(getApplicationContext(),"Welcome SimpWork!", Toast.LENGTH_SHORT);
+                toast.setMargin(50,50);
+                toast.show();
                 Intent a = new Intent (MainActivity.this, StopWatchAct.class);
                 a.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(a);
