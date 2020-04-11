@@ -48,12 +48,16 @@ public class StopWatchAct extends AppCompatActivity {
                     case R.id.home:
                         fragment = new HomeFragment();
                         break;
+                    case R.id.timer:
+                        fragment = new TimerFragment();
+                        break;
                     case R.id.discover:
                         fragment = new DiscoverFragment();
                         break;
                     case R.id.account:
                         fragment = new AccountFragment();
                         break;
+
                 }
 
                 if (fragment != null) {

@@ -11,6 +11,14 @@
         app:cnb_iconColor="#fff"
         app:cnb_textColor="#fff" />
 
+    <item
+        android:id="@+id/timer"
+        android:icon="@drawable/timer"
+        android:title="Timer"
+        app:cnb_backgroundColor="#FF769A"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff" />
+
 
     <item
         android:id="@+id/discover"
