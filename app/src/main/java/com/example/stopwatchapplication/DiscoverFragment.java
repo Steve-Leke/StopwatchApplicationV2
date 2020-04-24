@@ -69,14 +69,9 @@ public class DiscoverFragment extends Fragment {
             public void onClick (View v) {
                 if (!mp.isPlaying()) {
                     mp.start();
-                    int color = Color.parseColor("#FF769A"); //The color u want
-                    playBtn.setBackgroundResource(R.mipmap.ic_pause);
-                    playBtn.setImageResource(R.mipmap.ic_pause);
-//                    playBtn.setColorFilter(color);
-//                    playBtn.setColorFilter(color);
+                    playBtn.setImageResource(R.drawable.pause);
                 } else {
                     mp.pause();
-                    playBtn.setBackgroundResource(R.drawable.play_background);
                     playBtn.setImageResource(R.drawable.ic_play);
                 }
 
