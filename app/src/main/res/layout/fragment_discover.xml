@@ -1,18 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FF5722"
-    tools:context=".DiscoverFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".DiscoverFragment"
+android:orientation="vertical"
+android:background="#211D44">
 
-    <!-- TODO: Update blank fragment layout -->
+<com.makeramen.roundedimageview.RoundedImageView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/imageView1"
+    android:src="@drawable/juicewrld"
+    android:scaleType="centerCrop"
+    app:riv_corner_radius_bottom_left="130dp"
+    app:riv_corner_radius_bottom_right="130dp"
+    android:layout_width="260dp"
+    android:layout_height="260dp"
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp"
+    android:layout_gravity="center"/>
+
+<LinearLayout
+    android:layout_marginTop="25dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp">
     <TextView
-        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Juice"
+        android:textSize="38sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wrld"
+        android:textSize="28sp"
+        android:textColor="@android:color/white"/>
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:background="#48B9AC"
+    android:paddingLeft="40dp"
+    android:paddingRight="40dp"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
+
+    <ImageButton
+        android:id="@+id/playBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_play"
+        android:background="@drawable/play_background"
+        />
+
+    <TextView
+        android:id="@+id/robbery"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Robbery"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_weight="1"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/remainingTimeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="26sp"
-        android:textColor="#fff"
-        android:text="Discover"/>
+        android:text="-3:56"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
 
-</RelativeLayout>
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_play"
+        android:background="@drawable/play_background"/>
+
+    <TextView
+        android:id="@+id/lucidDreams"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Lucid Dreams"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_weight="1"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-3:56"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
+</LinearLayout>
+</LinearLayout>
