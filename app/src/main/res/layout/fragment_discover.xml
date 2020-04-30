@@ -42,80 +42,13 @@ android:background="#211D44">
         android:textSize="28sp"
         android:textColor="@android:color/white"/>
 </LinearLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="30dp"
-    android:background="#48B9AC"
-    android:paddingLeft="40dp"
-    android:paddingRight="40dp"
-    android:orientation="horizontal"
-    android:gravity="center"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp">
-
-    <ImageButton
-        android:id="@+id/playBtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_play"
-        android:background="@drawable/play_background"
-        />
-
-    <TextView
-        android:id="@+id/robbery"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Robbery"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:layout_weight="1"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:textSize="16sp"/>
-
-    <TextView
-        android:id="@+id/remainingTimeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="-3:56"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"/>
-</LinearLayout>
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recyclerView"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:layout_height="225dp"
+        android:orientation="vertical">
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_play"
-        android:background="@drawable/play_background"/>
-
-    <TextView
-        android:id="@+id/lucidDreams"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Lucid Dreams"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:layout_weight="1"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:textSize="16sp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="-3:56"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"/>
-</LinearLayout>
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

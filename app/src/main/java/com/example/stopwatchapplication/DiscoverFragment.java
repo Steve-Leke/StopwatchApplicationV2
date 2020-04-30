@@ -8,6 +8,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Message;
@@ -17,12 +19,18 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stopwatchapplication.R;
+import com.github.florent37.expansionpanel.ExpansionLayout;
+import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -36,6 +44,9 @@ public class DiscoverFragment extends Fragment {
     int totalTime;
     TextView lucidDreams;
     TextView robbery;
+    RecyclerView recyclerView;
+    RecyclerAdapter adapter;
+
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -51,17 +62,19 @@ public class DiscoverFragment extends Fragment {
 
         playBtn = (ImageButton) v.findViewById(R.id.playBtn);
         remainingTimeLabel = (TextView) v.findViewById(R.id.remainingTimeLabel);
-        lucidDreams = (TextView) v.findViewById(R.id.lucidDreams);
-        robbery = (TextView) v.findViewById(R.id.robbery);
-
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        adapter = new RecyclerAdapter();
+//        recyclerView.setAdapter(adapter);
 
 
         // Media Player
         mp = MediaPlayer.create(getActivity(), R.raw.robbery);
         mp.setLooping(false);
         mp.seekTo(0);
-//        mp.setVolume(0.5f, 0.5f);
+//      mp.setVolume(0.5f, 0.5f);
         totalTime = mp.getDuration();
+
+
 
         // Media Player
         playBtn.setOnClickListener(new View.OnClickListener() {
@@ -97,11 +110,12 @@ public class DiscoverFragment extends Fragment {
             }
         }).start();
 
-        Typeface MLight = Typeface.createFromAsset(getContext().getAssets(), "fonts/MLight.ttf");
-        Typeface MMedium = Typeface.createFromAsset(getContext().getAssets(), "fonts/MMedium.ttf");
-        Typeface MRegular = Typeface.createFromAsset(getContext().getAssets(), "fonts/MRegular.ttf");
-//        robbery.setTypeface(MMedium);
-//        lucidDreams.setTypeface(MMedium);
+//        //fill with empty objects
+//        final List<Object> list = new ArrayList<>();
+//        for (int i = 0; i < 30; i++) {
+//            list.add(new Object());
+//        }
+//        adapter.setItems(list);
         return v;
     }
 
@@ -128,4 +142,5 @@ public class DiscoverFragment extends Fragment {
 
         return timeLabel;
     }
+
 }
