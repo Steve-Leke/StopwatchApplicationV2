@@ -1,5 +1,6 @@
 package com.example.stopwatchapplication;
 
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,22 +86,53 @@ import java.util.List;
 public final class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder> {
 
     Context context;
-    ArrayList<Object> arrayList;
+    ArrayList<Object> arrayList ;
 
-    public RecyclerAdapter() {
-        this.arrayList = arrayList;
-        this.context = context;
+    public final static class RecyclerHolder extends RecyclerView.ViewHolder {
+
+        //      RecyclerView recyclerView;
+        ImageButton playBtn;
+        TextView songTitle;
+        TextView remaingTimeLabel;
+
+        public RecyclerHolder(View itemView) {
+            super(itemView);
+//          recyclerView = itemView.findViewById(R.id.recyclerView);
+            playBtn = itemView.findViewById(R.id.playBtn);
+            songTitle = itemView.findViewById(R.id.songTitle);
+            remaingTimeLabel = itemView.findViewById(R.id.remainingTimeLabel);
+        }
+
+    }
+
+
+
+
+    public RecyclerAdapter(ArrayList<Object> list) {
+        this.arrayList = list;
+        // this.context = context;
     }
 
     @NonNull
     @Override
     public RecyclerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.music_options_recycler_cell,parent,  false);
+        View view = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.music_options_recycler_cell, parent,  false);
+
+        //arrayList = new ArrayList<Object>();
+
+
         return new RecyclerHolder(view);
+
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerHolder holder, int position) {
+
+        holder.songTitle.setText("----- Title --- ");
+        holder.remaingTimeLabel.setText("00:00");
 
     }
 
@@ -109,21 +141,6 @@ public final class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.
         return arrayList.size();
     }
 
-    public final static class RecyclerHolder extends RecyclerView.ViewHolder {
 
-//      RecyclerView recyclerView;
-        ImageButton playBtn;
-        TextView songTitle;
-        TextView remaingTimeLabel;
-
-            public RecyclerHolder(View itemView) {
-            super(itemView);
-//          recyclerView = itemView.findViewById(R.id.recyclerView);
-            playBtn = itemView.findViewById(R.id.playBtn);
-            songTitle = itemView.findViewById(R.id.songTitle);
-            remaingTimeLabel = itemView.findViewById(R.id.remainingTimeLabel);
-          }
-
-        }
 
 }
