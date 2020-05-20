@@ -4,4 +4,8 @@
     <string name="frag_name">Count Down Timer</string>
     <string name="hint_minute">Minute</string>
     <string name="message_minutes">Minutes...</string>
+    <string name="message_height">Height...</string>
+    <string name="message_weight">Weight...</string>
+    <string name="message_BMI">BMI...</string>
+    <string name="message_Age">Age...</string>
 </resources>

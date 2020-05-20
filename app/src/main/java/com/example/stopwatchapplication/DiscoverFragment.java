@@ -1,4 +1,6 @@
 package com.example.stopwatchapplication;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -22,6 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stopwatchapplication.R;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Text;
@@ -39,14 +46,14 @@ public class DiscoverFragment extends Fragment {
     int totalTime;
     TextView lucidDreams;
     TextView robbery;
-
     ArrayList<Object> songList;
-
     RecyclerAdapter adapter;
+    DatabaseReference databaseSongs;
 
     public DiscoverFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,7 +63,35 @@ public class DiscoverFragment extends Fragment {
         addItemsToRecyclerViewArrayList();
         // super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_discover, container, false);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseSongs = database.getReference().child("songs");
+        databaseSongs.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Song song = dataSnapshot.getValue(Song.class);
+                Log.d("pizza", song.getSongTitle());
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -79,13 +114,13 @@ public class DiscoverFragment extends Fragment {
 //        mp.setVolume(0.5f, 0.5f);
         totalTime = mp.getDuration();
 
-        // Media Player
-        //        playBtn.setOnClickListener(new View.OnClickListener() {
+////         Media Player
+//         playBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick (View v) {
 //                if (!mp.isPlaying()) {
 //                    mp.start();
-//                    playBtn.setImageResource(R.drawable.pause);
+////                    playBtn.setImageResource(R.drawable.pause);
 //                } else {
 //                    mp.pause();
 //                    playBtn.setImageResource(R.drawable.ic_play);

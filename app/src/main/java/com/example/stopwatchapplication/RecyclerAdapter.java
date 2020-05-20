@@ -103,6 +103,7 @@ public final class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.
             remaingTimeLabel = itemView.findViewById(R.id.remainingTimeLabel);
         }
 
+
     }
 
 
@@ -121,6 +122,7 @@ public final class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.
                 .inflate(R.layout.music_options_recycler_cell, parent,  false);
 
         //arrayList = new ArrayList<Object>();
+
 
 
         return new RecyclerHolder(view);

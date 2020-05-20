@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "739648397616",
+    "firebase_url": "https://stopwatch-application.firebaseio.com",
+    "project_id": "stopwatch-application",
+    "storage_bucket": "stopwatch-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739648397616:android:05d8598e4feec093bf68f5",
+        "android_client_info": {
+          "package_name": "com.example.stopwatchapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739648397616-a8m250hbjjgvn07q4dg04ksaiofbup46.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY36xQ49QHvO-s1duETZLxlNHR6HxFGLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739648397616-a8m250hbjjgvn07q4dg04ksaiofbup46.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
