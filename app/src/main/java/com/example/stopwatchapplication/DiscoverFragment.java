@@ -46,8 +46,8 @@ public class DiscoverFragment extends Fragment {
     int totalTime;
     TextView lucidDreams;
     TextView robbery;
-    ArrayList<Object> songList;
-    RecyclerAdapter adapter;
+    ArrayList<Song> songList = new ArrayList<>();
+    SongAdapter songAdapter;
     DatabaseReference databaseSongs;
 
     public DiscoverFragment() {
@@ -60,16 +60,19 @@ public class DiscoverFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d("onCreateView", "starting...");
 
-        addItemsToRecyclerViewArrayList();
+//        addItemsToRecyclerViewArrayList();
         // super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_discover, container, false);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseSongs = database.getReference().child("songs");
+        songAdapter = new SongAdapter(songList);
         databaseSongs.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Song song = dataSnapshot.getValue(Song.class);
-                Log.d("pizza", song.getSongTitle());
+                songList.add(song);
+                songAdapter.notifyDataSetChanged();
+                Log.d("pizza", "onChildAdded: ");
             }
 
             @Override
@@ -96,9 +99,7 @@ public class DiscoverFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-
-        RecyclerAdapter adapter = new RecyclerAdapter(songList);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(songAdapter);
 
 
         //playBtn = (ImageButton) v.findViewById(R.id.playBtn);
@@ -173,21 +174,21 @@ public class DiscoverFragment extends Fragment {
         return timeLabel;
     }
 
-    // Function to add items in RecyclerView.
-    public void addItemsToRecyclerViewArrayList()
-    {
-        // Adding items to ArrayList
-        songList = new ArrayList<>();
-        songList.add("Song 1");
-        songList.add("Song 2");
-        songList.add("Song 3");
-        songList.add("Song 4");
-        songList.add("Song 5");
-        songList.add("Song 6");
-        songList.add("Song 7");
-        songList.add("Song 8");
-
-    }
+//    // Function to add items in RecyclerView.
+//    public void addItemsToRecyclerViewArrayList()
+//    {
+//        // Adding items to ArrayList
+//        songList = new ArrayList<>();
+//        songList.add("Song 1");
+//        songList.add("Song 2");
+//        songList.add("Song 3");
+//        songList.add("Song 4");
+//        songList.add("Song 5");
+//        songList.add("Song 6");
+//        songList.add("Song 7");
+//        songList.add("Song 8");
+//
+//    }
 }
 
 
