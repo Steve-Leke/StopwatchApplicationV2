@@ -9,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -17,11 +16,13 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.example.stopwatchapplication.DiscoverFragment.btnPlaying;
+import static com.example.stopwatchapplication.DiscoverFragment.songPos;
+
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
     private ArrayList<Song> mDataset;
-     Fragment musicFragment;
+     DiscoverFragment musicFragment;
      MediaPlayer songPlayer;
-     int totalTime;
 
 
 
@@ -34,15 +35,17 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
         // each data item is just a string in this case
         public TextView songTitle;
         public ImageButton playBtn;
+        public int totalTime;
         public MyViewHolder(final View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.songTitle);
             playBtn = itemView.findViewById(R.id.playBtn);
+            totalTime = 0;
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public SongAdapter(Fragment musicFragment, ArrayList<Song> myDataset, MediaPlayer songPlayer) {
+    public SongAdapter(DiscoverFragment musicFragment, ArrayList<Song> myDataset, MediaPlayer songPlayer) {
         mDataset = myDataset;
         this.musicFragment = musicFragment;
         this.songPlayer = songPlayer;
@@ -72,17 +75,21 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
             public void onClick (View v) {
                 artistName.setText(mDataset.get(position).getArtistName());
                 Picasso.get().load(mDataset.get(position).getArtistPicture()).into(artistImage);
+                songPos = position;
                 try {
-                    totalTime = songPlayer.getDuration();
                     if (!songPlayer.isPlaying()) {
-//                        startService();
+//                      startService();
                         songPlayer.reset();
                         songPlayer.setDataSource(mDataset.get(position).getSongUrl());
                         songPlayer.prepare();
+                        songPlayer.seekTo(holder.totalTime);
                         songPlayer.start();
+                        btnPlaying = 0;
                         holder.playBtn.setImageResource(R.drawable.pause);
                     } else {
+                        btnPlaying = 1;
                         songPlayer.pause();
+                        holder.totalTime = songPlayer.getCurrentPosition();
                         holder.playBtn.setImageResource(R.drawable.ic_play);
 //                        stopService();
                 }
@@ -100,6 +107,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
             }
         });
+
+        if (position == songPos) {
+            if (btnPlaying == 0) {
+                holder.playBtn.setImageResource(R.drawable.pause);
+
+            } else {
+                holder.playBtn.setImageResource(R.drawable.ic_play);
+            }
+
+        }
 
     }
 

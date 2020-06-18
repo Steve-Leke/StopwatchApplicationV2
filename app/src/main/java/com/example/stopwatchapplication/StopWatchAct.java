@@ -1,28 +1,24 @@
 package com.example.stopwatchapplication;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.graphics.Typeface;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.Chronometer;
-import android.widget.ImageView;
+import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
-import android.util.Log;
 
 public class StopWatchAct extends AppCompatActivity {
 
     ChipNavigationBar bottomNav;
     FragmentManager fragmentManager;
     DiscoverFragment discoverFragment;
+    public static MediaPlayer songPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +26,12 @@ public class StopWatchAct extends AppCompatActivity {
         setContentView(R.layout.activity_stop_watch);
         bottomNav = findViewById(R.id.bottom_nav);
         final String TAG = StopWatchAct.class.getSimpleName();
+        songPlayer = new MediaPlayer();
+        songPlayer.setAudioAttributes(
+                new AudioAttributes
+                        .Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build());
 
         if (savedInstanceState == null) {
             bottomNav.setItemSelected(R.id.home, true);

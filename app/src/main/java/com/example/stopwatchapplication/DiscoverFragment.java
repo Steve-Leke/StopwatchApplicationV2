@@ -1,8 +1,6 @@
 package com.example.stopwatchapplication;
 
 import android.graphics.Typeface;
-import android.media.AudioAttributes;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,10 +23,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
+import static com.example.stopwatchapplication.StopWatchAct.songPlayer;
 
 
 /**
@@ -36,13 +38,17 @@ import java.util.ArrayList;
 public class DiscoverFragment extends Fragment {
     ImageButton playBtn;
     TextView remainingTimeLabel;
-    MediaPlayer songPlayer;
     int totalTime;
     TextView lucidDreams;
     TextView robbery;
     ArrayList<Song> songList = new ArrayList<>();
     SongAdapter songAdapter;
     DatabaseReference databaseSongs;
+    ImageView artistImage;
+    TextView artistName;
+    public static int songPos = -1;
+    public static int btnPlaying = 0;
+
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -53,7 +59,8 @@ public class DiscoverFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             //Restore the fragment's state here
-
+            songPos = savedInstanceState.getInt("songKey");
+            btnPlaying = savedInstanceState.getInt("btnPlaying");
         }
     }
 
@@ -66,14 +73,10 @@ public class DiscoverFragment extends Fragment {
 //        addItemsToRecyclerViewArrayList();
         // super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_discover, container, false);
+        artistImage = v.findViewById(R.id.artistImage);
+        artistName = v.findViewById(R.id.artistName);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseSongs = database.getReference().child("songs");
-        songPlayer = new MediaPlayer();
-        songPlayer.setAudioAttributes(
-                new AudioAttributes
-                        .Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build());
         songAdapter = new SongAdapter(this,songList, songPlayer);
         databaseSongs.addChildEventListener(new ChildEventListener() {
             @Override
@@ -104,14 +107,23 @@ public class DiscoverFragment extends Fragment {
 
             }
         });
+
+        if (songList.size() > 0) {
+            Picasso.get().load(songList.get(songPos).getArtistPicture()).into(artistImage);
+            artistName.setText(songList.get(songPos).getArtistName());
+
+        }
+
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         recyclerView.setAdapter(songAdapter);
 
+
+
         //playBtn = (ImageButton) v.findViewById(R.id.playBtn);
-        //remainingTimeLabel = (TextView) v.findViewById(R.id.remainingTimeLabel);
+        //remainingTimeLabel = (TextView) v.findViById(R.id.remainingTimeLabel);
         //lucidDreams = (TextView) v.findViewById(R.id.lucidDreams);
         //robbery = (TextView) v.findViewById(R.id.robbery);
 
@@ -197,10 +209,12 @@ public class DiscoverFragment extends Fragment {
 //        songList.add("Song 8");
 //
 //    }
+
 @Override
 public void onSaveInstanceState(@NonNull Bundle outState) {
+    outState.putInt("songKey", songPos);
+    outState.putInt("btnPlaying", btnPlaying);
     super.onSaveInstanceState(outState);
-
     }
 
 }
