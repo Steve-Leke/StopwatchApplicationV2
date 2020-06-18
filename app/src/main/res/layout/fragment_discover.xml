@@ -10,7 +10,7 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/imageView1"
+        android:id="@+id/artistImage"
         android:src="@drawable/juicewrld"
         android:scaleType="centerCrop"
         app:riv_corner_radius_bottom_left="130dp"
@@ -20,6 +20,19 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_gravity="center"/>
+
+
+<!--    <ImageView-->
+<!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--        android:id="@+id/artistImage"-->
+<!--        android:src="@drawable/juicewrld"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:layout_width="260dp"-->
+<!--        android:layout_height="260dp"-->
+<!--        android:layout_marginLeft="40dp"-->
+<!--        android:layout_marginRight="40dp"-->
+<!--        android:layout_gravity="center"/>-->
+
     <LinearLayout
         android:layout_marginTop="25dp"
         android:layout_width="match_parent"
@@ -28,18 +41,16 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp">
         <TextView
+            android:id="@+id/artistName"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Juice"
+            android:text="Juice Wrld"
             android:textSize="38sp"
             android:textColor="@android:color/white"
-            android:textStyle="bold"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Wrld"
-            android:textSize="28sp"
-            android:textColor="@android:color/white"/>
+            android:textStyle="bold"
+            android:layout_marginBottom="25dp"/>
+
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"

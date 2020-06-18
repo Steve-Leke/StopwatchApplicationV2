@@ -22,13 +22,13 @@ public class StopWatchAct extends AppCompatActivity {
 
     ChipNavigationBar bottomNav;
     FragmentManager fragmentManager;
+    DiscoverFragment discoverFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stop_watch);
         bottomNav = findViewById(R.id.bottom_nav);
-
         final String TAG = StopWatchAct.class.getSimpleName();
 
         if (savedInstanceState == null) {
@@ -40,19 +40,37 @@ public class StopWatchAct extends AppCompatActivity {
                     .commit();
         }
 
+//        if (savedInstanceState != null) {
+//            //Restore the fragment's instance
+//            discoverFragment =  (DiscoverFragment) getSupportFragmentManager().getFragment(savedInstanceState, "DiscoverFragment");
+//        }
+//
+//        protected void onSaveInstanceState(Bundle outState) {
+//            super.onSaveInstanceState(outState);
+//
+//            //Save the fragment's instance
+//            getSupportFragmentManager().putFragment(outState, "myFragmentName", mMyFragment);
+//        }
+//
+
         bottomNav.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int id) {
                 Fragment fragment = null;
                 switch (id) {
                     case R.id.home:
-                        fragment = new  HomeFragment();
+                        fragment = new HomeFragment();
                         break;
                     case R.id.timer:
                         fragment = new TimerFragment();
                         break;
                     case R.id.discover:
-                        fragment =  new DiscoverFragment();
+                        if (discoverFragment == null) {
+                            discoverFragment =  new DiscoverFragment();
+                            fragment = discoverFragment;
+                        } else {
+                            fragment = discoverFragment;
+                        }
                         break;
                     case R.id.account:
                         fragment = new AccountFragment();

@@ -1,6 +1,7 @@
 package com.example.stopwatchapplication;
 
 import android.media.Image;
+import android.media.MediaPlayer;
 
 import java.net.URL;
 
@@ -9,6 +10,7 @@ public class Song {
     String artistName;
     String artistPicture;
     String songUrl;
+//    MediaPlayer songPlayer;
 
     public Song () {
 
@@ -19,6 +21,9 @@ public class Song {
         this.artistName = artistName;
         this.artistPicture = artistPicture;
         this.songUrl = songUrl;
+//        songPlayer = MediaPlayer.create(this, )
+////        songPlayer = MediaPlayer.create
+
     }
 
     public String getSongTitle() {

@@ -1,29 +1,24 @@
 package com.example.stopwatchapplication;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import android.graphics.Color;
+
 import android.graphics.Typeface;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.stopwatchapplication.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -42,7 +36,7 @@ import java.util.ArrayList;
 public class DiscoverFragment extends Fragment {
     ImageButton playBtn;
     TextView remainingTimeLabel;
-    MediaPlayer mp;
+    MediaPlayer songPlayer;
     int totalTime;
     TextView lucidDreams;
     TextView robbery;
@@ -52,6 +46,15 @@ public class DiscoverFragment extends Fragment {
 
     public DiscoverFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            //Restore the fragment's state here
+
+        }
     }
 
     @Override
@@ -65,7 +68,13 @@ public class DiscoverFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_discover, container, false);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseSongs = database.getReference().child("songs");
-        songAdapter = new SongAdapter(songList);
+        songPlayer = new MediaPlayer();
+        songPlayer.setAudioAttributes(
+                new AudioAttributes
+                        .Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build());
+        songAdapter = new SongAdapter(this,songList, songPlayer);
         databaseSongs.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -101,7 +110,6 @@ public class DiscoverFragment extends Fragment {
 
         recyclerView.setAdapter(songAdapter);
 
-
         //playBtn = (ImageButton) v.findViewById(R.id.playBtn);
         //remainingTimeLabel = (TextView) v.findViewById(R.id.remainingTimeLabel);
         //lucidDreams = (TextView) v.findViewById(R.id.lucidDreams);
@@ -109,11 +117,11 @@ public class DiscoverFragment extends Fragment {
 
 
         // Media Player
-        mp = MediaPlayer.create(getActivity(), R.raw.robbery);
-        mp.setLooping(false);
-        mp.seekTo(0);
+//        mp = MediaPlayer.create(getActivity(), R.raw.robbery);
+//        mp.setLooping(false);
+////        mp.seekTo(0);
 //        mp.setVolume(0.5f, 0.5f);
-        totalTime = mp.getDuration();
+//        totalTime = mp.getDuration();
 
 ////         Media Player
 //         playBtn.setOnClickListener(new View.OnClickListener() {
@@ -130,19 +138,19 @@ public class DiscoverFragment extends Fragment {
 //            }
 //        });
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (mp != null) {
-                    try {
-                        Message msg = new Message();
-                        msg.what = mp.getCurrentPosition();
-                        handler.sendMessage(msg);
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {}
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (mp != null) {
+//                    try {
+//                        Message msg = new Message();
+//                        msg.what = mp.getCurrentPosition();
+//                        handler.sendMessage(msg);
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {}
+//                }
+//            }
+//        }).start();
         Typeface MLight = Typeface.createFromAsset(getContext().getAssets(), "fonts/MLight.ttf");
         Typeface MMedium = Typeface.createFromAsset(getContext().getAssets(), "fonts/MMedium.ttf");
         Typeface MRegular = Typeface.createFromAsset(getContext().getAssets(), "fonts/MRegular.ttf");
@@ -159,7 +167,7 @@ public class DiscoverFragment extends Fragment {
             // Update Labels.
 
             String remainingTime = createTimeLabel(totalTime-currentPosition);
-            //    remainingTimeLabel.setText("- " + remainingTime);
+            remainingTimeLabel.setText("- " + remainingTime);
         }
     };
 
@@ -189,6 +197,12 @@ public class DiscoverFragment extends Fragment {
 //        songList.add("Song 8");
 //
 //    }
+@Override
+public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+
+    }
+
 }
 
 
