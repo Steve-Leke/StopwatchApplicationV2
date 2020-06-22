@@ -37,8 +37,6 @@ import static com.example.stopwatchapplication.StopWatchAct.songPlayer;
  */
 public class DiscoverFragment extends Fragment {
     ImageButton playBtn;
-    TextView remainingTimeLabel;
-    int totalTime;
     TextView lucidDreams;
     TextView robbery;
     ArrayList<Song> songList = new ArrayList<>();
@@ -48,6 +46,7 @@ public class DiscoverFragment extends Fragment {
     TextView artistName;
     public static int songPos = -1;
     public static int btnPlaying = 0;
+    public static int timeSaver;
 
 
     public DiscoverFragment() {
@@ -123,7 +122,6 @@ public class DiscoverFragment extends Fragment {
 
 
         //playBtn = (ImageButton) v.findViewById(R.id.playBtn);
-        //remainingTimeLabel = (TextView) v.findViById(R.id.remainingTimeLabel);
         //lucidDreams = (TextView) v.findViewById(R.id.lucidDreams);
         //robbery = (TextView) v.findViewById(R.id.robbery);
 
@@ -149,7 +147,7 @@ public class DiscoverFragment extends Fragment {
 //
 //            }
 //        });
-
+//
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
@@ -178,8 +176,8 @@ public class DiscoverFragment extends Fragment {
 
             // Update Labels.
 
-            String remainingTime = createTimeLabel(totalTime-currentPosition);
-            remainingTimeLabel.setText("- " + remainingTime);
+//            String remainingTime = createTimeLabel(totalTime-currentPosition);
+//            remainingTimeLabel.setText("- " + remainingTime);
         }
     };
 

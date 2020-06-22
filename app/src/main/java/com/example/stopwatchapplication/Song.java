@@ -1,26 +1,23 @@
 package com.example.stopwatchapplication;
 
-import android.media.Image;
-import android.media.MediaPlayer;
-
-import java.net.URL;
-
 public class Song {
     String songTitle;
     String artistName;
     String artistPicture;
     String songUrl;
+    String songLength;
 //    MediaPlayer songPlayer;
 
     public Song () {
 
     }
 
-    public Song (String songTitle, String artistName, String artistPicture, String songUrl) {
+    public Song (String songTitle, String artistName, String artistPicture, String songUrl, String songLength) {
         this.songTitle = songTitle;
         this.artistName = artistName;
         this.artistPicture = artistPicture;
         this.songUrl = songUrl;
+        this.songLength = songLength;
 //        songPlayer = MediaPlayer.create(this, )
 ////        songPlayer = MediaPlayer.create
 
@@ -56,5 +53,12 @@ public class Song {
 
     public void setSongUrl(String songUrl) {
         this.songUrl = songUrl;
+    }
+
+    public String getSongLength() {
+        return songLength;
+    }
+
+    public void setSongLength(String songLength) {this.songLength = songLength;
     }
 }

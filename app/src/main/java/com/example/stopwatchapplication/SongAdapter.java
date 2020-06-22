@@ -2,6 +2,8 @@ package com.example.stopwatchapplication;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.annotations.NotNull;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -23,6 +26,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
     private ArrayList<Song> mDataset;
      DiscoverFragment musicFragment;
      MediaPlayer songPlayer;
+     public int newSong;
+     public int totalTime;
+
+
+
 
 
 
@@ -35,12 +43,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
         // each data item is just a string in this case
         public TextView songTitle;
         public ImageButton playBtn;
-        public int totalTime;
+        public TextView timeLabel;
+        public int currentTime;
         public MyViewHolder(final View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.songTitle);
+            timeLabel = itemView.findViewById(R.id.remainingTimeLabel);
             playBtn = itemView.findViewById(R.id.playBtn);
-            totalTime = 0;
+            currentTime = 0;
         }
     }
 
@@ -69,27 +79,67 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
         final TextView artistName = musicFragment.getView().findViewById(R.id.artistName);
         final ImageView artistImage = musicFragment.getView().findViewById(R.id.artistImage);
+        holder.timeLabel.setText(mDataset.get(position).getSongLength());
         holder.songTitle.setText(mDataset.get(position).getSongTitle());
+        // The problem is that you have multiple threads going to one handler, that's why all the songs time labels are getting changed.
+        // You need to maintain a 1 thread to one handler ratio. This means you need to kill all previous threads when a new song is clicked.
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(@NotNull Message msg) {
+                int currentPosition = msg.what;
+
+                // Update Labels.
+                String remainingTime = createTimeLabel(totalTime-currentPosition);
+                holder.timeLabel.setText("- " + remainingTime);
+            }
+        };
         holder.playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v) {
                 artistName.setText(mDataset.get(position).getArtistName());
                 Picasso.get().load(mDataset.get(position).getArtistPicture()).into(artistImage);
+                if (songPos == position) {
+                    newSong = 0;
+                } else {
+                    newSong = 1;
+                }
                 songPos = position;
                 try {
                     if (!songPlayer.isPlaying()) {
 //                      startService();
-                        songPlayer.reset();
-                        songPlayer.setDataSource(mDataset.get(position).getSongUrl());
-                        songPlayer.prepare();
-                        songPlayer.seekTo(holder.totalTime);
-                        songPlayer.start();
-                        btnPlaying = 0;
-                        holder.playBtn.setImageResource(R.drawable.pause);
+                        if (newSong == 0) {
+                            songPlayer.seekTo(holder.currentTime);
+                            songPlayer.start();
+                            btnPlaying = 0;
+                            holder.playBtn.setImageResource(R.drawable.pause);
+                            songPlayer.setLooping(true);
+                        } else if (newSong == 1) {
+                            new Thread(new  Runnable() {
+                                @Override
+                                public void run() {
+                                    while (songPlayer != null) {
+                                        try {
+                                            Message msg = new Message();
+                                            msg.what = songPlayer.getCurrentPosition();
+                                            handler.sendMessage(msg);
+                                            Thread.sleep(1000);
+                                        } catch (InterruptedException e) {}
+                                    }
+                                }
+                            }).start();
+                            handler.removeCallbacksAndMessages(null);
+                            songPlayer.reset();
+                            songPlayer.setDataSource(mDataset.get(position).getSongUrl());
+                            songPlayer.prepare();
+                            songPlayer.start();
+                            totalTime = songPlayer.getDuration();
+                            btnPlaying = 0;
+                            holder.playBtn.setImageResource(R.drawable.pause);
+                        }
                     } else {
                         btnPlaying = 1;
                         songPlayer.pause();
-                        holder.totalTime = songPlayer.getCurrentPosition();
+                        holder.currentTime = songPlayer.getCurrentPosition();
                         holder.playBtn.setImageResource(R.drawable.ic_play);
 //                        stopService();
                 }
@@ -117,7 +167,45 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
             }
 
         }
+//         final Handler handler = new Handler() {
+//            @Override
+//            public void handleMessage(@NotNull Message msg) {
+//                int currentPosition = msg.what;
+//
+//                // Update Labels.
+//                String remainingTime = createTimeLabel(totalTime-currentPosition);
+//                holder.timeLabel.setText("- " + remainingTime);
+//            }
+//        };
 
+//            new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (songPlayer != null) {
+//                    try {
+//                        Message msg = new Message();
+//                        msg.what = songPlayer.getCurrentPosition();
+//                        handler.sendMessage(msg);
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {}
+//                }
+//            }
+//        }).start();
+
+    }
+
+
+
+
+    public String createTimeLabel(int time) {
+        String timeLabel = "";
+        int min = time / 1000 / 60;
+        int sec = time / 1000 % 60;
+        timeLabel = min + ":";
+        if (sec < 10) timeLabel += "0";
+        timeLabel += sec;
+
+        return timeLabel;
     }
 
     // Return the size of your dataset (invoked by the layout manager)
