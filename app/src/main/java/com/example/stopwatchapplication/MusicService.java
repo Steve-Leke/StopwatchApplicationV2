@@ -27,10 +27,6 @@ public class MusicService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
-//        songPlayer.reset();
-//        songPlayer.setDataSource(mDataset.get(position).getSongUrl());
-//        songPlayer.prepare();
-//        songPlayer.start();
         return mStartMode;
     }
 

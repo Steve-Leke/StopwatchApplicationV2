@@ -2,8 +2,8 @@ package com.example.stopwatchapplication;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,27 +13,21 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.annotations.NotNull;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.example.stopwatchapplication.DiscoverFragment.btnPlaying;
+import static com.example.stopwatchapplication.DiscoverFragment.newSong;
+import static com.example.stopwatchapplication.DiscoverFragment.savedRemainingTime;
 import static com.example.stopwatchapplication.DiscoverFragment.songPos;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> {
     private ArrayList<Song> mDataset;
      DiscoverFragment musicFragment;
      MediaPlayer songPlayer;
-     public int newSong;
      public int totalTime;
-
-
-
-
-
-
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -45,6 +39,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
         public ImageButton playBtn;
         public TextView timeLabel;
         public int currentTime;
+        Handler handler;
+        Thread thread;
+        CountDownTimer songTimer;
         public MyViewHolder(final View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.songTitle);
@@ -83,16 +80,29 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
         holder.songTitle.setText(mDataset.get(position).getSongTitle());
         // The problem is that you have multiple threads going to one handler, that's why all the songs time labels are getting changed.
         // You need to maintain a 1 thread to one handler ratio. This means you need to kill all previous threads when a new song is clicked.
-        final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(@NotNull Message msg) {
-                int currentPosition = msg.what;
-
-                // Update Labels.
-                String remainingTime = createTimeLabel(totalTime-currentPosition);
-                holder.timeLabel.setText("- " + remainingTime);
-            }
-        };
+//        holder.handler = new Handler() {
+//            @Override
+//            public void handleMessage(@NotNull Message msg) {
+//                int currentPosition = msg.what;
+//
+//                // Update Labels.
+//                String remainingTime = createTimeLabel(totalTime-currentPosition);
+//                holder.timeLabel.setText("- " + remainingTime);
+//            }
+//        };
+//        holder.thread = new Thread(new  Runnable() {
+//            @Override
+//            public void run() {
+//                while (songPlayer != null) {
+//                    try {
+//                        Message msg = new Message();
+//                        msg.what = songPlayer.getCurrentPosition();
+//                        holder.handler.sendMessage(msg);
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {}
+//                }
+//            }
+//        });
         holder.playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v) {
@@ -107,36 +117,65 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
                 try {
                     if (!songPlayer.isPlaying()) {
 //                      startService();
+                        holder.playBtn.setImageResource(R.drawable.pause);
                         if (newSong == 0) {
                             songPlayer.seekTo(holder.currentTime);
                             songPlayer.start();
+                            holder.songTimer = new CountDownTimer(totalTime-holder.currentTime, 1000) {
+
+                                public void onTick(long millisUntilFinished) {
+                                    String remainingTime = createTimeLabel(millisUntilFinished);
+                                    savedRemainingTime = remainingTime;
+                                    holder.timeLabel.setText("- " + savedRemainingTime);
+//                                  holder.timeLabel.setText("seconds remaining: " + millisUntilFinished / 1000);
+                                }
+
+                                public void onFinish() {
+                                    holder.songTimer.cancel();
+                                    holder.songTimer.start();
+
+                                }
+                            };
+                            holder.songTimer.start();
                             btnPlaying = 0;
-                            holder.playBtn.setImageResource(R.drawable.pause);
                             songPlayer.setLooping(true);
                         } else if (newSong == 1) {
-                            new Thread(new  Runnable() {
-                                @Override
-                                public void run() {
-                                    while (songPlayer != null) {
-                                        try {
-                                            Message msg = new Message();
-                                            msg.what = songPlayer.getCurrentPosition();
-                                            handler.sendMessage(msg);
-                                            Thread.sleep(1000);
-                                        } catch (InterruptedException e) {}
-                                    }
-                                }
-                            }).start();
-                            handler.removeCallbacksAndMessages(null);
+//                            if (holder.thread != null) {
+//                                holder.thread.interrupt();
+//                            }
+//                            holder.handler.removeCallbacksAndMessages(null);
+//                            holder.thread.start();
+                            if (holder.songTimer != null) {
+                                holder.songTimer.cancel();
+                            }
                             songPlayer.reset();
                             songPlayer.setDataSource(mDataset.get(position).getSongUrl());
                             songPlayer.prepare();
                             songPlayer.start();
                             totalTime = songPlayer.getDuration();
+                            holder.songTimer = new CountDownTimer(totalTime, 1000) {
+
+                                public void onTick(long millisUntilFinished) {
+                                    String remainingTime = createTimeLabel(millisUntilFinished);
+                                    savedRemainingTime = remainingTime;
+                                    holder.timeLabel.setText("- " + savedRemainingTime);
+//                                  holder.timeLabel.setText("seconds remaining: " + millisUntilFinished / 1000);
+                                }
+
+                                public void onFinish() {
+                                    holder.songTimer.cancel();
+                                    holder.songTimer.start();
+                                }
+                            };
+                            holder.songTimer.start();
                             btnPlaying = 0;
                             holder.playBtn.setImageResource(R.drawable.pause);
+                            songPlayer.setLooping(true);
                         }
                     } else {
+                        if (holder.songTimer != null) {
+                            holder.songTimer.cancel();
+                        }
                         btnPlaying = 1;
                         songPlayer.pause();
                         holder.currentTime = songPlayer.getCurrentPosition();
@@ -162,7 +201,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
             if (btnPlaying == 0) {
                 holder.playBtn.setImageResource(R.drawable.pause);
 
-            } else {
+            } else if (btnPlaying == 1){
                 holder.playBtn.setImageResource(R.drawable.ic_play);
             }
 
@@ -197,10 +236,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.MyViewHolder> 
 
 
 
-    public String createTimeLabel(int time) {
+
+
+    public String createTimeLabel(long time) {
         String timeLabel = "";
-        int min = time / 1000 / 60;
-        int sec = time / 1000 % 60;
+        long min = time / 1000 / 60;
+        long sec = time / 1000 % 60;
         timeLabel = min + ":";
         if (sec < 10) timeLabel += "0";
         timeLabel += sec;

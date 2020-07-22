@@ -46,6 +46,8 @@ public class DiscoverFragment extends Fragment {
     TextView artistName;
     public static int songPos = -1;
     public static int btnPlaying = 0;
+    public static int newSong;
+    public static String savedRemainingTime;
     public static int timeSaver;
 
 
@@ -60,6 +62,8 @@ public class DiscoverFragment extends Fragment {
             //Restore the fragment's state here
             songPos = savedInstanceState.getInt("songKey");
             btnPlaying = savedInstanceState.getInt("btnPlaying");
+            newSong = savedInstanceState.getInt("newSong");
+            savedRemainingTime = savedInstanceState.getString("remainingTime");
         }
     }
 
@@ -212,6 +216,8 @@ public class DiscoverFragment extends Fragment {
 public void onSaveInstanceState(@NonNull Bundle outState) {
     outState.putInt("songKey", songPos);
     outState.putInt("btnPlaying", btnPlaying);
+    outState.putInt("newSong", newSong);
+    outState.putString("remainingTime", savedRemainingTime);
     super.onSaveInstanceState(outState);
     }
 
