@@ -1,12 +1,7 @@
 package com.example.stopwatchapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -14,7 +9,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
         btnget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast=Toast.makeText(getApplicationContext(),"Welcome SimpWork!", Toast.LENGTH_SHORT);
-                toast.setMargin(50,50);
-                toast.show();
+////                Toast toast=Toast.makeText(getApplicationContext(),"Welcome SimpWork!", Toast.LENGTH_SHORT);
+//                toast.setMargin(50,50);
+//                toast.show();
                 Intent a = new Intent (MainActivity.this, StopWatchAct.class);
                 a.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(a);
